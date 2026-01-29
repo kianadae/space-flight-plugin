@@ -1,0 +1,9 @@
+# Mac system files
+.DS_Store
+
+# Logs
+*.log
+
+# If you ever use a dependency manager
+node_modules/
+vendor/
