@@ -77,14 +77,23 @@ function sfn_settings_page() {
     // Save settings if form submitted
     if (isset($_POST['sfn_save_settings'])) {
         check_admin_referer('sfn_settings');
+
+        $new_frequency = sanitize_text_field($_POST['update_frequency']); // Get the new frequency
+
         $settings = array(
             'search_phrase'     => sanitize_text_field($_POST['search_phrase']),
             'date_cutoff'       => sanitize_text_field($_POST['date_cutoff']),
-            'update_frequency'  => sanitize_text_field($_POST['update_frequency']),
+            'update_frequency'  => $new_frequency,
         );
         update_option('sfn_settings', $settings);
-
-        echo '<div class="notice notice-success"><p>' . __('Settings saved!', 'spaceflight-news') . '</p></div>';
+        /**
+         * FIX: Wire the setting to the Cron
+         */
+        // 1. Clear the existing schedule
+        wp_clear_scheduled_hook('sfn_fetch_news_cron');
+        // 2. Reschedule with the new frequency
+        wp_schedule_event(time(), $new_frequency, 'sfn_fetch_news_cron');
+        echo '<div class="notice notice-success"><p>' . __('Settings saved and Cron schedule updated!', 'spaceflight-news') . '</p></div>';
     }
 
     // Get current settings, set defaults if needed
