@@ -1,6 +1,6 @@
 # Spaceflight News WordPress Plugin
 
-A robust WordPress integration that fetches and synchronizes space exploration articles from the **Spaceflight News API (v4)**.
+A robust WordPress integration that fetches and synchronizes space exploration articles from the **Spaceflight News API**.
 
 ## 🚀 Key Features
 
